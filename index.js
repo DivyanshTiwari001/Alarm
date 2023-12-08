@@ -1,13 +1,45 @@
 let clk = {}
+const day = ['mon','tue','wed','thu','fri','sat','sun']
+let day_selected = {};
 const addAlarm = () => {
     const almlist = document.querySelector('.alarmList');
     const elem = document.createElement('li');
     elem.innerHTML = `
-    <form action="" class="alarmClock">
+    <form action="" class="alarmClock"  id=${"id" + Math.random().toString(16).slice(2)}>
         <input type="number" id="hourF" max="23" min="0" value="00">
         <input type="number" id="minF" max="59" min="0" value="00">
         <audio src="./alarm.mpeg" id="audio">show Alarm</audio>
-    </form>
+        <div class="days">
+        <div class="day-info">
+        <label for="sun">sun</label>
+        <input type="checkbox" name="sun" id="sun" class="day">
+        </div>
+        <div class="day-info">
+        <label for="mon">mon</label>
+        <input type="checkbox" name="mon" id="mon"  class="day">
+        </div>
+        <div class="day-info">
+        <label for="tue">tue</label>
+        <input type="checkbox" name="tue" id="tue"  class="day">
+        </div>
+        <div class="day-info">
+        <label for="wed">wed</label>
+        <input type="checkbox" name="wed" id="wed"  class="day">
+        </div>
+        <div class="day-info">
+        <label for="thu">thu</label>
+        <input type="checkbox" name="thu" id="thu"  class="day">
+        </div>
+        <div class="day-info">
+        <label for="fri">fri</label>
+        <input type="checkbox" name="fri" id="fri"  class="day">
+        </div>
+        <div class="day-info">
+        <label for="sat">sat</label>
+        <input type="checkbox" name="sat" id="sat"  class="day">
+        </div>
+        </div>
+        </form>
     <div class='alarm-btn'>
     <button id="set-alarm" onclick="setAlarm(this)">
     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-bell-fill" viewBox="0 0 16 16">
@@ -24,13 +56,23 @@ const addAlarm = () => {
     almlist.appendChild(elem);
 }
 function removeAlarm(e) {
-    clearInterval(clk[e.parentNode.parentNode])
+    clearInterval(clk[e.parentNode.parentNode.children[0].id])
+    delete(clk[e.parentNode.parentNode.children[0].id])
+    delete(day_selected[e.parentNode.parentNode.children[0].id]);
     e.parentNode.parentNode.children[0].children[2].pause();
     e.parentNode.parentNode.remove();
 }
 const setAlarm = (e) => {
     const alarmElem = e.parentNode.parentNode.children[0];
     if (e.id == "set-alarm") {
+        const day_arr = alarmElem.children[3];
+        const sel_day = [];
+        for(let i=0;i<7;i++){
+            if(day_arr.children[i].children[1].checked){
+                sel_day.push(day_arr.children[i].children[1].name);
+            }
+        }
+        day_selected[e.parentNode.parentNode.children[0].id]=sel_day;
         let hr = parseInt(alarmElem.children[0].value)
         let min = parseInt(alarmElem.children[1].value)
         if (hr > 23 || hr < 0) {
@@ -49,10 +91,13 @@ const setAlarm = (e) => {
       </svg>`
         alarmElem.children[0].disabled = true;
         alarmElem.children[1].disabled = true;
-        clk[e.parentNode.parentNode] = setInterval(() => {
+        clk[e.parentNode.parentNode.children[0].id] = setInterval(() => {
             const date = new Date();
-            if (alarmElem.children[0].value == date.getHours() && alarmElem.children[1].value == date.getMinutes()) {
+            if (alarmElem.children[0].value == date.getHours() && alarmElem.children[1].value == date.getMinutes() && day_selected[e.parentNode.parentNode.children[0].id].includes(day[date.getDay()-1])) {
                 alarmElem.children[2].play();
+            }
+            else{
+                alarmElem.children[2].pause();
             }
         }, 1000)
     }

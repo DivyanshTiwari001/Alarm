@@ -73,6 +73,22 @@ svg{
     background-color: black;
     color:white;
 }
+.days{
+    margin-left: 10px;
+    color:white;
+    display: flex;
+    flex-direction: column;
+    height: 50px;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+}
+.day-info{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
 @media (max-width:800px) {
     .container{
         width: 80vw;
