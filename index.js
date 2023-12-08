@@ -104,7 +104,7 @@ const setAlarm = (e) => {
     else if (e.id == 'unset-alarm') {
         alarmElem.children[0].disabled = false;
         alarmElem.children[1].disabled = false;
-        clearInterval(clk[e.parentNode.parentNode]);
+        clearInterval(clk[e.parentNode.parentNode.children[0].id]);
         alarmElem.children[2].pause();
         e.id = 'set-alarm';
         e.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-bell-fill" viewBox="0 0 16 16">
