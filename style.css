@@ -73,3 +73,8 @@ svg{
     background-color: black;
     color:white;
 }
+@media (max-width:500px) {
+    .container{
+        width: 100vw;
+    }
+}
