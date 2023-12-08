@@ -1,0 +1,75 @@
+*{
+    margin:0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.align-clock{
+    margin-top:10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    
+}
+.container{
+    display: flex;
+    flex-direction: column;
+    width: 60vw;
+    height: 70vh;
+    overflow-y: auto;
+    border-radius: 15px;
+    background-color: black;
+    box-shadow: 0 0 50px  rgba(0, 0, 0, 0.625);
+}
+.alarm-bar{
+    margin: 10px 10px 10px 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+svg{
+    fill:blue;
+}
+#add-alarm{
+    border-radius: 50%;
+    border: none;
+    height: 50px;
+    width: 50px;
+    font-size: 30px;
+    color:rgb(72, 75, 253);
+    background-color: rgba(102, 102, 102, 0.638);
+}
+#set-alarm,#unset-alarm,#remove-alarm{
+    background-color: black;
+    border:none;
+
+}
+#set-alarm>svg{
+    fill:green;
+}
+#unset-alarm>svg{
+    fill:rgba(255, 255, 0, 0.673);
+}
+#remove-alarm>svg{
+    fill:red
+}
+.alarmList{
+    list-style: none;
+}
+.alarmList>li{
+    display: flex;
+    flex-direction:row;
+    justify-content: space-between;
+    margin:10px;
+}
+.alarmClock{
+    display: flex;
+    flex-direction: row;
+}
+.alarmClock>input{
+    border: none;
+    font-size:20px;
+    text-align: center;
+    border:2px solid white;
+    background-color: black;
+    color:white;
+}
