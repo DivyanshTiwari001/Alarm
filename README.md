@@ -11,4 +11,5 @@
 3. Add Labels to alarms
 
 # Credits
+Special thanks to [Hemant Pandey](https://github.com/hkp16721) for their contributions to this project.
 
