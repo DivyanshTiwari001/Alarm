@@ -109,7 +109,7 @@ const setAlarm = (e) => {
             const dayValue = date.getDate();
             const month = date.getMonth() + 1;
             const year = date.getFullYear();
-            const reminderDateValue = ((dayValue) < 10 ? '0' + dayValue : dayValue) + (month < 10 ? '0' + month : month) + (year);
+            const reminderDateValue = ((dayValue) < 10 ? '0' + dayValue : dayValue)+ '/'+ (month < 10 ? '0' + month : month) +'/'+ (year);
             if (isreminder[e.parentNode.parentNode.children[0].id] == reminderDateValue || isreminder[e.parentNode.parentNode.children[0].id]=='all') {
                 if (alarmElem.children[0].value == date.getHours() && alarmElem.children[1].value == date.getMinutes() && day_selected[e.parentNode.parentNode.children[0].id].includes(day[date.getDay() - 1])) {
                     alarmElem.children[2].play();
