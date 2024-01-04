@@ -1,11 +1,14 @@
-let clk = {}
-const day = ['mon','tue','wed','thu','fri','sat','sun']
-let day_selected = {};
-const addAlarm = () => {
+const day = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
+const clk = {}
+const labels = {};
+const day_selected = {};
+const isreminder = {};
+const addAlarm = (date = 'all') => {
     const almlist = document.querySelector('.alarmList');
     const elem = document.createElement('li');
+    const id = "id" + Math.random().toString(16).slice(2)
     elem.innerHTML = `
-    <form action="" class="alarmClock"  id=${"id" + Math.random().toString(16).slice(2)}>
+    <form action="" class="alarmClock"  id=${id}>
         <input type="number" id="hourF" max="23" min="0" value="00">
         <input type="number" id="minF" max="59" min="0" value="00">
         <audio src="./alarm.mpeg" id="audio">show Alarm</audio>
@@ -41,6 +44,7 @@ const addAlarm = () => {
         </div>
         </form>
     <div class='alarm-btn'>
+    <button id="add-label" onclick="addlabel(this)">label</button>
     <button id="set-alarm" onclick="setAlarm(this)">
     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-bell-fill" viewBox="0 0 16 16">
     <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2m.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z"/>
@@ -54,25 +58,34 @@ const addAlarm = () => {
   </div>
     `
     almlist.appendChild(elem);
+    isreminder[id] = date;
 }
+
 function removeAlarm(e) {
+    document.getElementById('msg').innerHTML = "";
     clearInterval(clk[e.parentNode.parentNode.children[0].id])
-    delete(clk[e.parentNode.parentNode.children[0].id])
-    delete(day_selected[e.parentNode.parentNode.children[0].id]);
+    delete (clk[e.parentNode.parentNode.children[0].id])
+    delete (day_selected[e.parentNode.parentNode.children[0].id]);
     e.parentNode.parentNode.children[0].children[2].pause();
     e.parentNode.parentNode.remove();
 }
+    
+function addlabel(e) {
+    const str = prompt("Add Label");
+    labels[e.parentNode.parentNode.children[0].id] = str;
+}
+
 const setAlarm = (e) => {
     const alarmElem = e.parentNode.parentNode.children[0];
     if (e.id == "set-alarm") {
         const day_arr = alarmElem.children[3];
         const sel_day = [];
-        for(let i=0;i<7;i++){
-            if(day_arr.children[i].children[1].checked){
+        for (let i = 0; i < 7; i++) {
+            if (day_arr.children[i].children[1].checked) {
                 sel_day.push(day_arr.children[i].children[1].name);
             }
         }
-        day_selected[e.parentNode.parentNode.children[0].id]=sel_day;
+        day_selected[e.parentNode.parentNode.children[0].id] = sel_day.length>0?sel_day:day;
         let hr = parseInt(alarmElem.children[0].value)
         let min = parseInt(alarmElem.children[1].value)
         if (hr > 23 || hr < 0) {
@@ -93,18 +106,28 @@ const setAlarm = (e) => {
         alarmElem.children[1].disabled = true;
         clk[e.parentNode.parentNode.children[0].id] = setInterval(() => {
             const date = new Date();
-            if (alarmElem.children[0].value == date.getHours() && alarmElem.children[1].value == date.getMinutes() && day_selected[e.parentNode.parentNode.children[0].id].includes(day[date.getDay()-1])) {
-                alarmElem.children[2].play();
-            }
-            else{
-                alarmElem.children[2].pause();
+            const dayValue = date.getDate();
+            const month = date.getMonth() + 1;
+            const year = date.getFullYear();
+            const reminderDateValue = ((dayValue) < 10 ? '0' + dayValue : dayValue) + (month < 10 ? '0' + month : month) + (year);
+            if (isreminder[e.parentNode.parentNode.children[0].id] == reminderDateValue || isreminder[e.parentNode.parentNode.children[0].id]=='all') {
+                if (alarmElem.children[0].value == date.getHours() && alarmElem.children[1].value == date.getMinutes() && day_selected[e.parentNode.parentNode.children[0].id].includes(day[date.getDay() - 1])) {
+                    alarmElem.children[2].play();
+                    const msg = labels[e.parentNode.parentNode.children[0].id];
+                    if(msg!==undefined)
+                    document.getElementById('msg').innerHTML = "Message: " + msg;
+                }
+                else {
+                    alarmElem.children[2].pause();
+                }
             }
         }, 1000)
     }
     else if (e.id == 'unset-alarm') {
+        document.getElementById('msg').innerHTML = "";
         alarmElem.children[0].disabled = false;
         alarmElem.children[1].disabled = false;
-        clearInterval(clk[e.parentNode.parentNode]);
+        clearInterval(clk[e.parentNode.parentNode.children[0].id]);
         alarmElem.children[2].pause();
         e.id = 'set-alarm';
         e.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-bell-fill" viewBox="0 0 16 16">
@@ -112,3 +135,10 @@ const setAlarm = (e) => {
         </svg>`
     }
 }
+
+const addReminder = () => {
+    let sel_date = prompt("Provide date in dd/mm/yyyy format");
+    if(sel_date===null)return;
+    addAlarm(sel_date);
+}
+

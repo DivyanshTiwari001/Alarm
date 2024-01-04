@@ -3,6 +3,10 @@
     padding: 0;
     box-sizing: border-box;
 }
+#msg{
+    width: 100%;
+    text-align: center;
+}
 .align-clock{
     margin-top:10px;
     display: flex;
@@ -38,9 +42,16 @@ svg{
     color:rgb(72, 75, 253);
     background-color: rgba(102, 102, 102, 0.638);
 }
+.alarm-btn{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    gap:5px;
+}
 #set-alarm,#unset-alarm,#remove-alarm{
     background-color: black;
     border:none;
+    height:100%;
 
 }
 #set-alarm>svg{
@@ -83,14 +94,52 @@ svg{
     overflow-x: hidden;
 
 }
+.config-btn{
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+}
+#add-reminder{
+    background-color: rgba(102, 102, 102, 0.638);
+    height: 50px;
+    width: 50px;
+    border:none;
+    border-radius: 50%;
+}
+#add-reminder>svg{
+    fill:rgb(72, 75, 253);
+    width: 30px;
+    height: 30px;
+}
 .day-info{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
 }
-@media (max-width:800px) {
+#add-label{
+    width:60px;
+    height: 100%;
+    background-color: black;
+    border:2px solid white;
+    color:white;
+    font-family:'Courier New', Courier, monospace;
+    font-size: 15px;
+}
+@media (max-width:700px) {
+    .align-clock{
+        margin: 0;
+    }
     .container{
-        width: 80vw;
+        margin:0;
+        padding:0;
+        border-radius: 0;
+        width: 100vw;
+        height:100vh;
+    }
+    .alarm-bar{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
     }
 }
